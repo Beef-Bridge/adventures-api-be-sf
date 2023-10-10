@@ -1,5 +1,5 @@
 # adventures-api-be-sf
-Projet "aventures" (voyages, randos, etc.), backend, basé sur Symfony
+Projet "aventures" (voyages, randos, etc.), backend, basé sur Symfony 6.3.5
 
 ## Requirements
 
