@@ -1,0 +1,68 @@
+version: '3.8'
+
+name: "adventures_api_be_sf"
+
+services:
+  svc_mysql:
+    container_name: 'adventures_api_db_mysql'
+    restart: always
+    build: ./docker/mysql
+    volumes:
+      - adventures_api_db_data:/var/lib/mysql
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+    networks:
+      - adventures_api_vlan
+
+  svc_php_fpm:
+    container_name: 'adventures_api_php_fpm'
+    restart: 'always'
+    build: ./docker/php
+    depends_on:
+      - svc_mysql
+    links:
+      - 'svc_mysql'
+    working_dir: /var/www
+    volumes:
+      - ./project:/var/www
+    networks:
+      - adventures_api_vlan
+
+  svc_nginx:
+    container_name: 'adventures_api_nginx'
+    restart: 'always'
+    build: ./docker/nginx
+    depends_on:
+      - svc_php_fpm
+    links:
+      - 'svc_php_fpm'
+    working_dir: /var/www
+    volumes:
+      - ./project:/var/www
+    networks:
+      - adventures_api_vlan
+    ports:
+      - "8004:80"
+
+  svc_pma:
+    container_name: 'adventures_api_pma'
+    restart: always
+    image: phpmyadmin:latest
+    depends_on:
+      - svc_mysql
+    ports:
+      - "8084:80"
+    environment:
+      PMA_HOST: svc_mysql
+    networks:
+      - adventures_api_vlan
+
+volumes:
+  adventures_api_db_data:
+    name: adventures_api_db_data
+    external: false
+
+networks:
+  adventures_api_vlan:
+    name: adventures_api_vlan
+    external: false
