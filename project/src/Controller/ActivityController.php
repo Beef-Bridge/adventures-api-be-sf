@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Activity;
 use App\Repository\ActivityRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -20,5 +21,14 @@ class ActivityController extends AbstractController
         $jsonActivityList = $serializer->serialize($activityList, 'json', ['groups' => 'getActivities']);
 
         return new JsonResponse($jsonActivityList, Response::HTTP_OK, [], true);
+    }
+
+    #[Route('/api/activity/{id}', name: 'api_detail_activity_get', methods: ['GET'])]
+    public function getDetailActivity(
+        Activity $activity,
+        SerializerInterface $serializer
+    ): JsonResponse {
+        $jsonActivity = $serializer->serialize($activity, 'json', ['groups' => 'getActivities']);
+        return new JsonResponse($jsonActivity, Response::HTTP_OK, ['accept' => 'json'], true);
     }
 }

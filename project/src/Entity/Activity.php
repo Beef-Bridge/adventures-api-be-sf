@@ -18,23 +18,23 @@ class Activity
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(["getActivities"])]
+    #[Groups(["getActivities", "getActivityType"])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(["getActivities"])]
+    #[Groups(["getActivities", "getActivityType"])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(["getActivities"])]
+    #[Groups(["getActivities", "getActivityType"])]
     private ?string $slug = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Groups(["getActivities"])]
+    #[Groups(["getActivities", "getActivityType"])]
     private ?string $description = null;
 
     #[ORM\Column]
-    #[Groups(["getActivities"])]
+    #[Groups(["getActivities", "getActivityType"])]
     private ?\DateTimeImmutable $carried_out = null;
 
     #[ORM\ManyToOne(inversedBy: 'activities')]

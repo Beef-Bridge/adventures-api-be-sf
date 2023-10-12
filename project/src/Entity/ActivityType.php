@@ -19,14 +19,15 @@ class ActivityType
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(["getActivities"])]
+    #[Groups(["getActivities", "getActivityType"])]
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
-    #[Groups(["getActivities"])]
+    #[Groups(["getActivities", "getActivityType"])]
     private ?string $name = null;
 
     #[ORM\OneToMany(mappedBy: 'activity_type_id', targetEntity: Activity::class)]
+    #[Groups(["getActivityType"])]
     private Collection $activities;
 
     public function __construct()
