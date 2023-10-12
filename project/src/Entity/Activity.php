@@ -2,33 +2,51 @@
 
 namespace App\Entity;
 
+use App\Entity\Trait\CreatedAtTrait;
+use App\Entity\Trait\UpdatedAtTrait;
 use App\Repository\ActivityRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ActivityRepository::class)]
 class Activity
 {
+    use CreatedAtTrait;
+    use UpdatedAtTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(["getActivities"])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(["getActivities"])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(["getActivities"])]
     private ?string $slug = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(["getActivities"])]
     private ?string $description = null;
 
     #[ORM\Column]
+    #[Groups(["getActivities"])]
     private ?\DateTimeImmutable $carried_out = null;
 
     #[ORM\ManyToOne(inversedBy: 'activities')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(["getActivities"])]
     private ?ActivityType $activity_type_id = null;
+
+    public function __construct()
+    {
+        $this->created_at = new \DateTimeImmutable();
+        $this->updated_at = new \DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {
