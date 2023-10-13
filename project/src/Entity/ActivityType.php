@@ -26,7 +26,7 @@ class ActivityType
     #[Groups(["getActivities", "getActivityType"])]
     private ?string $name = null;
 
-    #[ORM\OneToMany(mappedBy: 'activity_type_id', targetEntity: Activity::class)]
+    #[ORM\OneToMany(mappedBy: 'activity_type_id', targetEntity: Activity::class, cascade: ["persist", "remove"])]
     #[Groups(["getActivityType"])]
     private Collection $activities;
 

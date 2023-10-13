@@ -38,7 +38,7 @@ class Activity
     private ?\DateTimeImmutable $carried_out = null;
 
     #[ORM\ManyToOne(inversedBy: 'activities')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(name: "activity_type_id", referencedColumnName: "id", nullable: false, onDelete: "CASCADE")]
     #[Groups(["getActivities"])]
     private ?ActivityType $activity_type_id = null;
 
