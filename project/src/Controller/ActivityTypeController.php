@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\ActivityType;
 use App\Repository\ActivityTypeRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,5 +30,16 @@ class ActivityTypeController extends AbstractController
     ): JsonResponse {
         $jsonActivityType = $serializer->serialize($activityType, 'json', ['groups' => 'getActivityType']);
         return new JsonResponse($jsonActivityType, Response::HTTP_OK, ['accept' => 'json'], true);
+    }
+
+    #[Route('/api/activity-type/{id}', name: 'api_activity_type_delete', methods: ['DELETE'])]
+    public function deleteActivityType(
+        ActivityType $activityType,
+        EntityManagerInterface $em
+    ): JsonResponse {
+        $em->remove($activityType);
+        $em->flush();
+
+        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 }
